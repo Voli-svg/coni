@@ -137,6 +137,18 @@
             max-height: 180px; /* Tamaño inicial acortado para caber en el sobre */
             overflow: hidden;
             border: 1px solid #f5e6d3;
+            /* Soporte para scroll si el texto es muy largo */
+            scrollbar-width: thin;
+            scrollbar-color: #ffb8c6 transparent;
+        }
+
+        /* Scrollbar personalizada webkit */
+        .letter::-webkit-scrollbar {
+            width: 6px;
+        }
+        .letter::-webkit-scrollbar-thumb {
+            background-color: #ffb8c6;
+            border-radius: 4px;
         }
 
         /* Contenido del texto */
@@ -195,11 +207,12 @@
 
         /* 3. Sacar la carta */
         .envelope-wrapper.open .letter {
-            bottom: 120px; /* La carta sube */
-            max-height: 500px; /* Se expande para mostrar todo el texto */
+            bottom: 110px; /* La carta sube */
+            max-height: 60vh; /* Se expande pero respeta el alto de la pantalla */
+            overflow-y: auto; /* Activa el scroll si es necesario */
             height: auto;
             z-index: 5; /* Pasa por encima de la solapa frontal */
-            padding-bottom: 30px;
+            padding-bottom: 20px;
         }
 
         /* 4. Mostrar el texto */
@@ -248,10 +261,23 @@
         }
 
         /* Ajustes para móviles */
-        @media (max-width: 400px) {
-            .envelope-wrapper { transform: scale(0.9); }
-            .envelope-wrapper:hover { transform: scale(0.9) translateY(-5px); }
-            .envelope-wrapper.open .letter { bottom: 100px; }
+        @media (max-width: 480px) {
+            .envelope-wrapper { transform: scale(0.85); }
+            .envelope-wrapper:hover { transform: scale(0.85) translateY(-5px); }
+            /* Al abrir en móviles, bajamos el sobre un poco para que la carta no se salga por arriba */
+            .envelope-wrapper.open { transform: scale(0.85) translateY(40px); }
+            
+            .letter-content h1 { font-size: 24px; margin-bottom: 10px; }
+            .letter-content p { font-size: 14px; margin-bottom: 10px; }
+            .letter-content .signature { font-size: 20px; margin-top: 15px; }
+        }
+
+        /* Ajuste para pantallas muy pequeñas o en horizontal */
+        @media (max-height: 600px) {
+            .envelope-wrapper { transform: scale(0.7); }
+            .envelope-wrapper:hover { transform: scale(0.7) translateY(-5px); }
+            .envelope-wrapper.open { transform: scale(0.7) translateY(60px); }
+            .envelope-wrapper.open .letter { bottom: 90px; max-height: 75vh; }
         }
     </style>
 </head>
